@@ -19,12 +19,27 @@ parser.add_argument(
         type=int,
         help="Number of characters to generate"
     )
+parser.add_argument(
+        "-c",
+        "--context",
+        default=None,
+        type=str,
+        help="The context for the AI",
+    )
 args = parser.parse_args()
 
 model = torch.load("ai-shakespeare")
 m = model.to(device)
 
-context = torch.zeros((1,1), dtype=torch.long, device=device)
+if args.context is not None:
+    context = encode(args.context)
+    context = torch.tensor(context, dtype=torch.long)
+    context = context[None, :]
+else:
+    context = torch.zeros((1,1), dtype=torch.long, device=device)
+
+print(context)
+
 out = decode(m.generate(context, max_new_tokens=args.num_chars)[0].tolist())
 
 if args.output is not None:
