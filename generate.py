@@ -33,7 +33,7 @@ m = model.to(device)
 
 if args.context is not None:
     context = encode(args.context)
-    context = torch.tensor(context, dtype=torch.long)
+    context = torch.tensor(context, dtype=torch.long, device=device)
     context = context[None, :]
 else:
     context = torch.zeros((1,1), dtype=torch.long, device=device)
