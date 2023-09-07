@@ -11,12 +11,21 @@ block_size = 256
 max_iters = 5000
 eval_interval = 500
 learning_rate = 3e-4
-device = 'cuda' if torch.cuda.is_available() else 'cpu'
 eval_iters = 200
 n_layer = 4
 n_head = 6
 n_embed = n_head * 32
 dropout = 0.2
+
+if torch.cuda.is_available():
+    print("Using CUDA")
+    device = 'cuda'
+elif torch.backends.mps.is_available():
+    print("Using MPS")
+    device = 'mps'
+else:
+    print("Using CPU")
+    device = 'cpu'
 
 torch.manual_seed(1337)
 
